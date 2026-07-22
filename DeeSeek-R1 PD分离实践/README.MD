@@ -418,7 +418,7 @@ if args.deploy_log != "":
 备注：需要注意，官方的gen throughput不是sglang bench的结果，需要去decode的日志里面找到running req为48时对应的gen throughput。
 
 # 常见问题
-- 无法找到IB
+## 无法找到IB
 ```shell
 node62:7287:7287 [0] NCCL INFO NET/Plugin: Could not find: libnccl-net.so.
 node62:7287:7287 [0] NCCL INFO NET/IB : No device found.
@@ -427,7 +427,7 @@ node62:7287:7287 [0] NCCL INFO NET/IB : No device found.
 apt update
 apt install -y ibverbs-utils libibverbs1 librdmacm1
 ```
-- fabric manager和driver版本不一致
+## fabric manager和driver版本不一致
 ```shell
 # https://developer.download.nvidia.cn/compute/cuda/repos/ubuntu2004/x86_64/
 
@@ -445,7 +445,7 @@ systemctl start nvidia-fabricmanager
 
 systemctl status nvidia-fabricmanager
 ```
-- 使用mooncake发现failed register rdma
+## 使用mooncake发现failed register rdma
 ```shell
 
 # 检查模块是否加载
@@ -457,7 +457,7 @@ sudo modprobe nvidia_peermem
 # 确认加载成功
 lsmod | grep nvidia_peermem
 ```
-- 没有iptables导致docker启动不了
+## 没有iptables导致docker启动不了
 ```shell
 dpkg -i iptables_1.8.7-1ubuntu5.2_amd64.deb
 ```
@@ -466,7 +466,7 @@ dpkg -i iptables_1.8.7-1ubuntu5.2_amd64.deb
 ```shell
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
 ```
-- 安装docker
+## 安装docker
 ```shell
 sjhl@sjhl:/var/lib/apt/lists$ ls /etc/apt/preferences.d/ 
 
