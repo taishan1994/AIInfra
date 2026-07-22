@@ -410,8 +410,8 @@ if args.deploy_log != "":
 ```
 
 实验结果：
-| running-req | gen throughput | Input token throughput (tok/s) | Output token throughput (tok/s) | Total token throughput (tok/s) | Concurrency | 备注 |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| | running-req | gen throughput | Input token throughput (tok/s) | Output token throughput (tok/s) | Total token throughput (tok/s) | Concurrency | 备注 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | 官方 | 48 | 719.48 | / | / | / | / | 2p1d(tp16) |
 | 实测 (FP8+MTP+SBO+SWAP_AB) | 48 | 662.3（最高714.43） | 24901.72 | 9338.15 | 34239.87 | 1684.39 | prefill使用sglang-0.5.6.post2，decode使用ali_sglang，kvcache管理用mooncake |
 
