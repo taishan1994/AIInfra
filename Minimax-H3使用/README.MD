@@ -343,4 +343,80 @@ xomfyui已经提供了三个使用的模板：
 
 上传完图片后，我们点击右上角的运行即可。最终结果会保存在工作区的/data/ssd2/gongoubo/h3/ComfyUI/output/video这个下面。以下是运行结果：
 
+./videos/MiniMax_H3_00001_.mp4
+
 <video src="./videos/MiniMax_H3_00001_.mp4"></video>
+
+## 文生视频
+
+同样的，先修改模型。这里不需要图片作为输入，直接运行即可。
+
+./videos/MiniMax_H3_00002_.mp4
+
+<video src="./videos/MiniMax_H3_00002_.mp4"></video>
+
+## 参考生视频
+
+同样的，先修改模型，然后上传官方给的两张样例，然后点击运行即可。
+
+![image-20260810163001903](./README.assets/image-20260810163001903.png)
+
+生成结果：
+
+./videos/MiniMax_H3_00003_.mp4
+
+<video src="./videos/MiniMax_H3_00003_.mp4"></video>
+
+# 16G的显卡能够部署吗
+
+假设使用3060 16G显卡。
+
+可以运行，但 3060 16GB 需要采用“纯 INT4 + CPU/显存卸载”的配置，不能使用目录里的 NVFP4 或 INT8 版本。
+
+ 最低建议：
+
+  - GPU：RTX 3060 16GB
+  - 系统内存：至少 64GB，推荐 128GB
+  - 硬盘：至少预留 80到100GB SSD 空间
+  - Diffusion：下载纯 INT4 的 MiniMax_H3_FL2VA...int4...
+  - Text Encoder：使用 qwen3vl_32b_minimax_h3_int4_convrot.safetensors
+  - VAE：当前的两个 VAE 可以继续使用
+  - 模式：优先 FL2VA，不要使用 Ref2VA
+  - 分辨率：先从 512×288 或 576×320 开始
+  - 时长：先使用 5 秒
+
+ 当前目录中的：
+
+  - *_nvfp4.safetensors：仅适合 Blackwell，不适合 3060
+  - *_int8_convrot.safetensors：显存不够
+  - *_mixed_int4_int8_convrot.safetensors：约 15GB 以上，16GB 显存非常紧张
+
+建议启动命令：
+
+```shell
+  cd /data/ssd2/gongoubo/h3
+
+  ./start_comfyui.sh \
+    --cuda-device 0 \
+    --lowvram \
+    --reserve-vram 1 \
+    --preview-method none \
+    --fp16-intermediates \
+    --disable-auto-launch
+```
+
+如果仍然显存不足，再使用更激进的模式：
+
+```shell
+  ./start_comfyui.sh \
+    --cuda-device 0 \
+    --novram \
+    --reserve-vram 1 \
+    --preview-method none \
+    --disable-auto-launch
+```
+
+`--novram` 会大量使用系统内存，速度会明显变慢。ComfyUI 官方也建议低显存时依次尝试 --lowvram、--novram，CPU 模式只作为最后手段。官方低显存说明
+  (https://docs.comfy.org/zh/troubleshooting/overview)；对应启动参数也可在 ComfyUI 官方参数定义中确认。cli_args.py (https://github.com/Comfy-Org/ComfyUI/blob/master/comfy/cli_args.py)
+
+结论：你需要先补下载一个“纯 INT4 FL2VA diffusion 模型”。只用当前的 NVFP4/INT8 权重，3060 16GB 基本无法稳定运行。
