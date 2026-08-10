@@ -417,6 +417,6 @@ xomfyui已经提供了三个使用的模板：
 ```
 
 `--novram` 会大量使用系统内存，速度会明显变慢。ComfyUI 官方也建议低显存时依次尝试 --lowvram、--novram，CPU 模式只作为最后手段。官方低显存说明
-  (https://docs.comfy.org/zh/troubleshooting/overview)； 对应启动参数也可在 ComfyUI 官方参数定义中确认。cli_args.py (https://github.com/Comfy-Org/ComfyUI/blob/master/comfy/cli_args.py)
+  (https://docs.comfy.org/zh/troubleshooting/overview) ；对应启动参数也可在 ComfyUI 官方参数定义中确认。cli_args.py (https://github.com/Comfy-Org/ComfyUI/blob/master/comfy/cli_args.py)
 
 结论：你需要先补下载一个“纯 INT4 FL2VA diffusion 模型”。只用当前的 NVFP4/INT8 权重，3060 16GB 基本无法稳定运行。
