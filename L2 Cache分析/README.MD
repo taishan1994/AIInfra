@@ -1,7 +1,5 @@
 # 固定 Decode Batch 的 NSYS/NCU 采集流程
 
-[English](DECODE_NSYS_NCU_WORKFLOW.md) | [中文](DECODE_NSYS_NCU_WORKFLOW_zh.md)
-
 本文整理一套可复用的单机固定 decode batch profiling 流程。后续切换模型时，
 只需要替换模型路径、served name、tokenizer、parser 和模型专属启动参数。
 
