@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DRIVE 论文核心技术解读卡</title>
+  <style>
+    :root{--bg:#f5f7fb;--paper:#fff;--ink:#172033;--muted:#667085;--line:#e5eaf2;--blue:#3157d5;--cyan:#0d9cab;--orange:#f0783c;--green:#1c9b72;--purple:#7b55c7;--shadow:0 12px 35px rgba(36,49,83,.09)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#edf3ff 0,#f8f9fc 360px);color:var(--ink);font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;line-height:1.72}
+    a{color:inherit}.wrap{width:min(1180px,calc(100% - 36px));margin:auto}.hero{padding:70px 0 42px}.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:6px 12px;border:1px solid #ccd8ff;border-radius:999px;background:#f7f9ff;color:var(--blue);font-size:13px;font-weight:700}.hero h1{font-size:clamp(38px,6vw,74px);line-height:1.03;letter-spacing:-.045em;margin:20px 0 18px;max-width:980px}.hero h1 span{color:var(--blue)}.subtitle{font-size:19px;color:#475467;max-width:900px}.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}.pill{padding:7px 12px;border-radius:9px;background:#fff;border:1px solid var(--line);font-size:13px;box-shadow:0 3px 12px rgba(30,46,80,.04)}
+    .layout{display:grid;grid-template-columns:240px 1fr;gap:28px;align-items:start}.toc{position:sticky;top:18px;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}.toc strong{display:block;margin-bottom:10px}.toc a{display:block;text-decoration:none;color:#667085;font-size:14px;padding:7px 9px;border-radius:8px}.toc a:hover{color:var(--blue);background:#f1f4ff}
+    main{min-width:0}.section{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:34px;margin-bottom:24px;box-shadow:var(--shadow)}.section h2{font-size:29px;line-height:1.25;margin:0 0 18px;letter-spacing:-.025em}.section h3{font-size:20px;margin:26px 0 9px}.kicker{font-size:12px;font-weight:800;letter-spacing:.13em;color:var(--blue);text-transform:uppercase;margin-bottom:8px}.lead{font-size:18px;color:#344054}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{padding:19px;border:1px solid var(--line);border-radius:15px;background:#fbfcff}.card b{display:block;margin-bottom:6px}.card .num{font-size:29px;font-weight:850;line-height:1.1;color:var(--blue)}
+    .thesis{border-left:5px solid var(--blue);background:#f2f5ff;padding:18px 20px;border-radius:0 14px 14px 0;font-size:18px}.warn{border-left-color:var(--orange);background:#fff7f2}.good{border-left-color:var(--green);background:#effbf6}.formula{font-family:"Times New Roman",serif;background:#101828;color:#eef4ff;padding:18px 22px;border-radius:14px;overflow:auto;font-size:17px}.flow{display:grid;grid-template-columns:1fr 36px 1fr 36px 1fr;align-items:stretch;gap:8px}.step{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff}.step small{display:block;color:var(--muted)}.arrow{display:grid;place-items:center;color:var(--blue);font-size:25px;font-weight:900}
+    figure{margin:24px 0 6px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}figure img{display:block;width:100%;height:auto}figcaption{padding:11px 14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);background:#fafbfc}.darkimg{background:#05070c;padding:8px}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px;margin:18px 0}table{border-collapse:collapse;width:100%;min-width:680px;font-size:14px}th,td{padding:11px 13px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}th:first-child,td:first-child{text-align:left}thead{background:#f4f6fb}tr:last-child td{border-bottom:0}.hi{background:#eefbf5;font-weight:700}.bad{background:#fff1ed}.tag{display:inline-block;padding:2px 7px;border-radius:6px;background:#eef2ff;color:#3d59c5;font-size:12px;font-weight:700}
+    .takeaway{display:grid;grid-template-columns:80px 1fr;gap:14px;padding:17px 0;border-bottom:1px dashed var(--line)}.takeaway:last-child{border-bottom:0}.takeaway .idx{font-size:35px;line-height:1;color:#d6def7;font-weight:900}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.bar{height:9px;border-radius:99px;background:#edf0f5;overflow:hidden;margin-top:8px}.bar span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:inherit}
+    .footer{padding:22px 0 60px;color:#667085;font-size:13px;text-align:center}@media(max-width:880px){.layout{grid-template-columns:1fr}.toc{display:none}.section{padding:24px}.grid,.two{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}}
+  </style>
+</head>
+<body>
+  <header class="hero wrap">
+    <span class="eyebrow">PAPER CORE TECH SHARE · 2025.11</span>
+    <h1><span>DRIVE</span>：代码 RLVR 的关键，可能不是新算法，而是把训练数据排对顺序</h1>
+    <p class="subtitle">对《Data Curation Best Practices for Reinforcement Learning with Verifiable Reward in Competitive Code Generation》的结构化中文解读：从 SFT 难例挖掘、熵扩展，到 Pre-GRPO 的硬题课程学习。</p>
+    <div class="meta"><span class="pill">Tencent Hunyuan Team</span><span class="pill">Qwen2.5-32B</span><span class="pill">GRPO + 可执行测试奖励</span><span class="pill">LeetCode / Codeforces</span><span class="pill">arXiv:2511.06307v1</span></div>
+  </header>
+
+  <div class="wrap layout">
+    <aside class="toc"><strong>内容导航</strong><a href="#one">01 一句话结论</a><a href="#problem">02 问题是什么</a><a href="#pipeline">03 完整训练管线</a><a href="#sft">04 SFT 数据策略</a><a href="#filtering">05 难例识别与筛选</a><a href="#stage1">06 Stage 1 熵扩展</a><a href="#stage2">07 Stage 2 Pre-GRPO</a><a href="#why">08 为什么大 rollout</a><a href="#results">09 结果与消融</a><a href="#limits">10 局限与疑点</a><a href="#practice">11 实践配方</a></aside>
+    <main>
+      <section class="section" id="one">
+        <div class="kicker">01 · TL;DR</div><h2>一句话读懂 DRIVE</h2>
+        <div class="thesis"><b>先用大量、难度较均衡的题和较小 rollout 扩大策略熵，再用少量真正困难的题和大 rollout 做持续“攻坚”。</b>作者认为：对竞技编程 RLVR，数据课程与采样预算的配置，至少和改 RL 算法同样重要。</div>
+        <div class="grid" style="margin-top:18px"><div class="card"><div class="num">470K</div><b>精选 SFT prompts</b>从 127 万条经 5 轮 arena learning 筛出，并提高难题曝光。</div><div class="card"><div class="num">9K × 8</div><b>Stage 1</b>大而均衡的数据池，每题 8 个 rollout，24K 总序列长度，目标是扩熵。</div><div class="card"><div class="num">72→50→25</div><b>Stage 2</b>不断保留最低通过率难题，并把 rollout 增至 64/80，集中突破能力边界。</div></div>
+      </section>
+
+      <section class="section" id="problem">
+        <div class="kicker">02 · MOTIVATION</div><h2>作者真正要解决的，不是“GRPO怎么改”</h2>
+        <p class="lead">数学 RLVR 已有大量算法工作，但竞技编程还多了一层约束：答案不仅要推理正确，还必须能编译、通过隐藏测试、满足时间与空间复杂度。DRIVE 把问题改写为：<b>给定 GRPO 和可验证奖励，怎样挑 prompt、怎样安排难度、怎样分配 rollout 才最划算？</b></p>
+        <div class="two"><div class="card"><b>重度蒸馏后的三个症状</b>① 策略熵低，反复走相同解法；② 思维链和代码发生重复，最终被截断；③ 难题通常要求更长推理，SFT 很难建立稳定的长程信用。</div><div class="card"><b>标准均匀 RL 的盲点</b>容易题奖励接近饱和，几乎不给梯度；极难题全错，同组优势也缺少区分度；真正容易学到的是“中等成功率”的题。</div></div>
+        <figure><img src="paperimg-002.png" alt="DRIVE benchmark performance"><figcaption>论文图1：最终 DRIVE-RL 模型在多个代码评测集上的表现。黄色斜线柱为最终模型。</figcaption></figure>
+      </section>
+
+      <section class="section" id="pipeline">
+        <div class="kicker">03 · PIPELINE</div><h2>完整训练路线：一次 SFT，两段 RL</h2>
+        <div class="flow"><div class="step"><span class="tag">SFT</span><h3>难例识别与加权</h3><small>1.27M prompts → 5轮 arena → 470K；难题重复两次；蒸馏 DeepSeek-R1-0528。</small></div><div class="arrow">→</div><div class="step"><span class="tag">RL 1</span><h3>Entropy Expansion</h3><small>约9K题，难度较均衡；GRPO；8 rollouts；24K；32 steps。</small></div><div class="arrow">→</div><div class="step"><span class="tag">RL 2</span><h3>Hard-Focus Curriculum</h3><small>从175道 LiveCode V6 题中持续筛最难题；72→50→25；大 rollout；32K。</small></div></div>
+        <figure><img src="paperimg-004.png" alt="DRIVE training pipeline"><figcaption>论文图2：左侧 SFT 数据构建，右下依次是熵扩展和硬题课程学习。原图为透明背景，此处统一使用白色底色显示。</figcaption></figure>
+      </section>
+
+      <section class="section" id="sft">
+        <div class="kicker">04 · SUPERVISED FINE-TUNING</div><h2>SFT：筛出难题还不够，还要把 token 预算补回来</h2>
+        <p>作者比较了三种策略：全量 127 万题；5轮 Arena Learning 只保留模型答错的 47 万题；以及在后者基础上对难题增加曝光的 Twice Hard Learning。核心发现不是“数据越少越好”，而是<b>难题的信息密度更高，但训练 token 不足仍会欠拟合</b>。</p>
+        <div class="table-wrap"><table><thead><tr><th>策略</th><th>LiveCode 08-11</th><th>V5</th><th>V6</th><th>LeetCode</th><th>Codeforces</th></tr></thead><tbody><tr><td>Basic SFT（1.27M）</td><td>58.2%</td><td class="hi">60.3%</td><td>54.5%</td><td>55.8%</td><td>11.2%</td></tr><tr><td>Arena Learning（470K）</td><td>60.0%</td><td>59.8%</td><td>54.2%</td><td>55.3%</td><td>11.1%</td></tr><tr class="hi"><td>Twice Hard Learning</td><td>60.2%</td><td>59.4%</td><td>54.9%</td><td>57.8%</td><td>11.5%</td></tr></tbody></table></div>
+        <div class="thesis good"><b>正确解读：</b>47万条难例几乎追平127万全量数据，说明筛选有效；再提高难例的采样/重复权重后，多数基准达到最好。收益来自“把算力集中到仍能提供学习信号的数据”，不是简单重复越多越好。</div>
+      </section>
+
+      <section class="section" id="filtering">
+        <div class="kicker">05 · DATA CURATION</div><h2>论文到底怎样识别并筛选难例？</h2>
+        <p class="lead">DRIVE并没有在所有阶段使用同一个“难度分数”。论文实际给出了三层数据处理：SFT前的静态难度分类、Arena Learning按当前模型失败筛选，以及Pre-GRPO按多次采样的低通过率持续保留难题。</p>
+
+        <h3>第一层：小模型将SFT题目分成Easy / Medium / Hard</h3>
+        <div class="two"><div class="card"><b>论文原文依据 · §3.1，PDF第3页</b><q lang="en">train a small model to classify problem difficulty</q><p>随后把题目分成三类，并将Hard题在训练数据中重复两次。</p></div><div class="card"><b>论文没有交代的部分</b><p>分类器架构、标签来源、分类阈值、准确率均未给出。因此可以确认“用了分类器和三档标签”，但不能从论文复现分类器本身。</p></div></div>
+        <p class="formula">D<sub>SFT</sub> = D<sub>easy</sub> ∪ D<sub>medium</sub> ∪ 2D<sub>hard</sub></p>
+        <p style="color:var(--muted);font-size:13px">上式是本解读对“Hard样本重复两次”的集合化表达，不是论文原公式。</p>
+
+        <h3>第二层：Arena Learning保留当前模型答错的题</h3>
+        <div class="two"><div class="card"><b>论文原文依据 · §4.3，PDF第6页</b><q lang="en">retain only the samples the model fails on</q><p>论文将数据分成5份：在前一份上训练，然后预测下一份；只把当前模型失败的样本带入后续训练。最终由127万条缩至47万条。</p></div><div class="card"><b>难度定义</b><p>这里的“难”不是固定人工等级，而是“当前阶段的模型没有解决”。模型更新后，样本是否仍是难例也可能变化。</p></div></div>
+        <p class="formula">D<sub>k+1</sub><sup>hard</sup> = { x ∈ D<sub>k+1</sub> | current model fails on x }</p>
+        <p style="color:var(--muted);font-size:13px">这是本解读根据论文的5-fold Arena Learning流程写出的形式化表示；论文未在此处明确说明“失败”由哪些测试用例或判定器定义。</p>
+
+        <h3>第三层：Pre-GRPO按低通过率动态保留困难题</h3>
+        <div class="two"><div class="card"><b>论文原文依据 · §3.2，PDF第4页</b><q lang="en">carries forward a subset of low-pass-rate cases</q><p>也就是说，每一阶段优先把通过率较低的题带入下一阶段，形成Hard-Focus Curriculum。</p></div><div class="card"><b>论文明确与未明确的边界</b><p>论文明确使用“low-pass-rate cases”筛选，但没有完整给出pass rate的估计公式、每次筛选使用多少评估rollout，以及并列时如何处理。</p></div></div>
+        <p class="formula">解读性表达：p̂(x) = passed rollouts / all rollouts;&nbsp; priority(x) ↑ as p̂(x) ↓</p>
+        <div class="thesis warn"><b>不要把推导当原文：</b>用 <i>1-p̂(x)</i> 表示难度是自然的数学归纳，但论文只明确说保留“低通过率样本”，没有正式定义 <i>difficulty(x)=1-p̂(x)</i> 这一公式。</div>
+
+        <h3>“最难”不一定等于“最适合GRPO”</h3>
+        <div class="grid"><div class="card"><b>通过率接近100%</b>rollout几乎全对，组内奖励相同，相对优势弱。</div><div class="card"><b>通过率介于0和100%</b>同组有成功也有失败，通常能提供最清晰的相对学习信号。</div><div class="card"><b>通过率始终为0</b>rollout全部失败，同样缺少组内差异；论文用大rollout提高探索出成功轨迹的概率。</div></div>
+        <div class="thesis" style="margin-top:18px"><b>数据筛选主线：</b>静态分类器粗分难度 → 当前模型失败样本筛选 → 多rollout低通过率动态排序。前两步服务SFT数据效率，最后一步服务RL课程和计算预算分配。</div>
+      </section>
+
+      <section class="section" id="stage1">
+        <div class="kicker">06 · STAGE 1</div><h2>熵扩展：为什么反而使用较短的24K训练窗口？</h2>
+        <p>Stage 1 在约9K道相对均衡的竞赛题上用每题8个 rollout 训练。作者称之为“24k-style”：prompt与response合计24K。它不追求立即攻克最难题，而是先打破蒸馏模型的窄分布。</p>
+        <figure><img src="paperimg-006.png" alt="entropy comparison"><figcaption>论文图3：24K-style 的熵总体上升，而32K-style持续下降。作者据此把前者解释为探索扩张阶段。</figcaption></figure>
+        <div class="two"><div class="card"><b>机制直觉</b>题目分布更广且中等难度题占比合适，同组 rollout 中更容易同时出现成功和失败，GRPO能形成有区分度的相对优势。</div><div class="card"><b>实际目标</b>增加解法多样性，减少重复思维链和截断，提升通用竞赛编程能力，为第二阶段难题攻坚提供更好的初始策略。</div></div>
+      </section>
+
+      <section class="section" id="stage2">
+        <div class="kicker">07 · STAGE 2</div><h2>Pre-GRPO：一种“保留最难题”的课程机制</h2>
+        <p>论文把 Pre-GRPO 描述为：每一阶段评估各题通过率，把低通过率样本带入下一阶段，逐步缩小训练集，但始终保留最难实例。</p>
+        <div class="flow"><div class="step"><span class="tag">Phase 1</span><h3>72道最难题</h3><small>64-step budget</small></div><div class="arrow">→</div><div class="step"><span class="tag">Phase 2</span><h3>50道最难题</h3><small>32-step budget</small></div><div class="arrow">→</div><div class="step"><span class="tag">Phase 3</span><h3>25道最难题</h3><small>32-step budget</small></div></div>
+        <p class="formula">difficulty(x) ≈ 1 - pass_rate(x); &nbsp; Dₖ₊₁ = HardestSubset(Dₖ)</p>
+        <div class="thesis"><b>它和传统“从易到难”的课程学习方向相反：</b>模型已经通过SFT和Stage 1拥有基础能力，因此Stage 2不是先学简单题，而是不断淘汰已经会做的题，把计算预算留给能力边界附近及边界之外的题。</div>
+      </section>
+
+      <section class="section" id="why">
+        <div class="kicker">08 · ROLLOUT BUDGET</div><h2>为什么困难题必须用大 rollout？</h2>
+        <p>设单次 rollout 成功概率为 p，采样 G 次至少得到一个成功轨迹的概率为：</p>
+        <p class="formula">P(at least one success) = 1 - (1 - p)<sup>G</sup></p>
+        <div class="grid"><div class="card"><b>若 p = 1%</b><div class="num">7.7%</div>G=8时至少一个成功样本</div><div class="card"><b>若 p = 1%</b><div class="num">47.4%</div>G=64时至少一个成功样本</div><div class="card"><b>若 p = 1%</b><div class="num">55.2%</div>G=80时至少一个成功样本</div></div>
+        <p>对极难题，小 rollout 很可能全错，组内奖励相同，GRPO的相对优势接近零；增大 rollout 会提高“偶然探索出正确解”的机会，也能更稳定地估计通过率和优势。但这只是必要条件，不代表64一定最优。</p>
+        <figure><img src="paperimg-013.png" alt="rollout number effect"><figcaption>论文图6：单题训练中，rollout从8增至64，学习速度明显加快。</figcaption></figure>
+      </section>
+
+      <section class="section" id="results">
+        <div class="kicker">09 · RESULTS & ABLATIONS</div><h2>最终收益来自两阶段协同，不是任一阶段单独完成</h2>
+        <p style="color:var(--muted);font-size:14px">下表中的模型成绩统一换算为百分比。例如论文原文的 0.602（常简写为 .602）表示 60.2%。最后一行是相对于 SFT 基线的相对增幅，不是百分点差值。</p>
+        <div class="table-wrap"><table><thead><tr><th>模型</th><th>LC 08-11</th><th>LC V5</th><th>LC V6</th><th>LeetCode</th><th>Codeforces</th></tr></thead><tbody><tr><td>SFT Model</td><td>60.2%</td><td>59.4%</td><td>54.9%</td><td>57.8%</td><td>11.5%</td></tr><tr><td>RL Stage 1</td><td>62.5%</td><td>62.7%</td><td>63.4%</td><td>60.3%</td><td class="bad">11.2%</td></tr><tr class="hi"><td>完整 DRIVE RL</td><td>69.9%</td><td>69.7%</td><td>70.3%</td><td>65.3%</td><td>18.2%</td></tr><tr><td>相对 SFT 提升</td><td>+16.1%</td><td>+17.3%</td><td>+28.1%</td><td>+13.0%</td><td>+58.3%</td></tr></tbody></table></div>
+        <h3>最关键的消融证据</h3>
+        <div class="takeaway"><div class="idx">01</div><div><b>直接拿全部175道LiveCode V6做RL会崩。</b>LeetCode从57.8%降到29.6%，说明“高质量数据”不等于“适合当前RL阶段的数据”。</div></div><div class="takeaway"><div class="idx">02</div><div><b>只用9K数据做RL，通用LiveCode变强，但Codeforces变弱。</b>扩熵能拓宽策略，却不能自动把探索转化为最高难度能力。</div></div><div class="takeaway"><div class="idx">03</div><div><b>跳过Stage 1直接做硬题课程，训练集变强但OOD泛化不稳。</b>完整两阶段在所有基准上最好。</div></div>
+        <figure><img src="paperimg-008.png" alt="training performance LiveCode V6"><figcaption>论文图4(a)：不同RL策略在LiveCode V6上的训练曲线；红线显示直接全量训练发生collapse。</figcaption></figure>
+        <figure><img src="paperimg-010.png" alt="training performance LiveCode 08-11"><figcaption>论文图4(b)：在未污染的LiveCode 08-11验证集上，完整方法的泛化更稳。</figcaption></figure>
+      </section>
+
+      <section class="section" id="limits">
+        <div class="kicker">10 · CRITICAL READING</div><h2>这篇论文最值得保留的质疑</h2>
+        <div class="takeaway"><div class="idx">A</div><div><b>rollout配置前后不一致。</b>摘要写Stage 2为64；方法3.2写80；实验设置4.1又写64。复现时必须向作者代码或配置确认，不能把80和64混为一谈。</div></div>
+        <div class="takeaway"><div class="idx">A2</div><div><b>课程最后阶段题数不一致。</b>正文§3.2写72→50→25道最难题，但论文图2标注72→50→32。页面流程沿用正文的25，同时在此保留冲突，复现时不能擅自认定其中一个数字正确。</div></div>
+        <div class="takeaway"><div class="idx">B</div><div><b>LiveCode V6既用于Stage 2训练又用于评测。</b>作者明确承认V6被暴露，因此V6不能作为纯泛化证据；更应看LiveCode 08-11、V5以及训练截止日期后的周赛。</div></div>
+        <div class="takeaway"><div class="idx">C</div><div><b>“熵上升导致泛化”主要是相关性解释。</b>24K与32K实验可能还同时改变截断、有效batch、难度和训练分布，尚不能严格隔离因果。</div></div>
+        <div class="takeaway"><div class="idx">D</div><div><b>成本非常高。</b>32B SFT使用256张GPU；难题阶段每prompt 64/80条长轨迹。论文证明了“大采样有效”，但没有给出与成本等价的最优基线。</div></div>
+        <div class="takeaway"><div class="idx">E</div><div><b>内部MoE模型不可复现。</b>大模型缩放结果支持方法可迁移，但模型、数据和完整训练细节未公开，只能视为趋势证据。</div></div>
+      </section>
+
+      <section class="section" id="practice">
+        <div class="kicker">11 · PRACTICAL RECIPE</div><h2>如果要复现，应该抄什么，而不是机械抄数字</h2>
+        <div class="grid"><div class="card"><b>1. 先测每题可学习性</b>用当前策略采样，记录pass rate、reward variance、截断率和输出熵。全0与全1样本都不适合长期占用同等预算。</div><div class="card"><b>2. 分离“扩探索”和“攻难题”</b>Stage 1用广覆盖、适中难度、小G；Stage 2用难例池、大G，并持续重估难度。</div><div class="card"><b>3. 动态分配rollout</b>不要所有题都G=64。中等题G=8~16，低成功率且仍可探索的题再提高到32~64。</div><div class="card"><b>4. 监控collapse</b>同时看验证集、entropy、重复率、截断率和reward方差；只看训练reward可能掩盖全量RL退化。</div><div class="card"><b>5. 保留OOD周赛</b>训练用题与最终评测严格按时间切分；被用于课程筛选的数据不能再作为核心泛化证据。</div><div class="card"><b>6. 做成本归一化消融</b>比较相同生成token预算下的G、题数和step数，才能判断收益来自课程还是单纯更多计算。</div></div>
+        <div class="thesis warn" style="margin-top:20px"><b>最终评价：</b>DRIVE最有价值的贡献不是一个可直接替换GRPO的算法模块，而是一套数据工程观点：RL prompt不是静态训练集，而是需要随着策略能力变化被持续测量、筛选与重新分配计算预算的“动态课程”。</div>
+      </section>
+    </main>
+  </div>
+  <footer class="footer wrap">基于论文 arXiv:2511.06307v1 制作 · 图表版权归原论文作者所有 · 本页为中文技术解读，不替代原文</footer>
+</body>
+</html>
