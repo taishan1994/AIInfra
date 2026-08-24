@@ -6,3 +6,4 @@
 
 - [Ψ-RAG：把 Tree-RAG 从“单篇长文摘要树”推进到跨文档多跳检索](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/RAG/psi-rag/index.html)
 - [AgenticRAG：企业 RAG 的提升，可能来自把“检索”变成一段可导航的工作流](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/RAG/agentic-rag/index.html)
+- [Is Grep All You Need：Agent Harness 如何重写 Agentic Search 的检索胜负](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/RAG/grep-agent-harness/index.html)
