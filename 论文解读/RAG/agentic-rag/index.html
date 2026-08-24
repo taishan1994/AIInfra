@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AgenticRAG 论文核心技术解读卡</title>
+  <style>
+    :root{--bg:#f5f7fa;--paper:#fff;--ink:#18202d;--muted:#667085;--line:#e4e8ef;--blue:#2858bd;--teal:#087d77;--red:#c94f48;--orange:#d97535;--green:#27805f;--shadow:0 12px 34px rgba(39,51,78,.09)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#eaf4f2 0,#f8fafb 360px);color:var(--ink);font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;line-height:1.72;letter-spacing:0}a{color:inherit}.wrap{width:min(1180px,calc(100% - 36px));margin:auto}.hero{padding:70px 0 42px}.eyebrow{display:inline-flex;padding:6px 12px;border:1px solid #bcded8;border-radius:999px;background:#f4fbf9;color:var(--teal);font-size:13px;font-weight:700}.hero h1{font-size:clamp(38px,6vw,70px);line-height:1.04;margin:20px 0 18px;max-width:1080px}.hero h1 span{color:var(--teal)}.subtitle{font-size:19px;color:#475467;max-width:930px}.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}.pill{padding:7px 12px;border-radius:8px;background:#fff;border:1px solid var(--line);font-size:13px;box-shadow:0 3px 12px rgba(30,46,80,.04)}
+    .layout{display:grid;grid-template-columns:240px 1fr;gap:28px;align-items:start}.toc{position:sticky;top:18px;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:var(--shadow)}.toc strong{display:block;margin-bottom:10px}.toc a{display:block;text-decoration:none;color:var(--muted);font-size:14px;padding:7px 9px;border-radius:6px}.toc a:hover{color:var(--teal);background:#edf8f6}main{min-width:0}.section{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:34px;margin-bottom:24px;box-shadow:var(--shadow)}.section h2{font-size:29px;line-height:1.25;margin:0 0 18px}.section h3{font-size:20px;margin:26px 0 9px}.kicker{font-size:12px;font-weight:800;letter-spacing:.13em;color:var(--teal);text-transform:uppercase;margin-bottom:8px}.lead{font-size:18px;color:#344054}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{padding:19px;border:1px solid var(--line);border-radius:8px;background:#fbfcfd}.card b{display:block;margin-bottom:6px}.num{font-size:29px;font-weight:850;line-height:1.1;color:var(--teal)}
+    .thesis{border-left:5px solid var(--teal);background:#edf8f6;padding:18px 20px;border-radius:0 8px 8px 0;font-size:18px}.warn{border-left-color:var(--orange);background:#fff6ef}.good{border-left-color:var(--green);background:#edf9f4}.formula{font-family:"Times New Roman",serif;background:#101828;color:#eef4ff;padding:18px 22px;border-radius:8px;overflow:auto;font-size:17px}.flow{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr;align-items:stretch;gap:8px}.step{border:1px solid var(--line);border-radius:8px;padding:18px;background:#fff}.step small{display:block;color:var(--muted)}.arrow{display:grid;place-items:center;color:var(--teal);font-size:25px;font-weight:900}figure{margin:24px 0 6px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}figure img{display:block;width:100%;height:auto}figcaption{padding:11px 14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);background:#fafbfc}.narrow{max-width:620px;margin-left:auto;margin-right:auto}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:8px;margin:18px 0}table{border-collapse:collapse;width:100%;min-width:680px;font-size:14px}th,td{padding:11px 13px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}th:first-child,td:first-child{text-align:left}thead{background:#f4f6f8}tr:last-child td{border-bottom:0}.hi{background:#edf9f4;font-weight:700}.bad{background:#fff1ed}.tag{display:inline-block;padding:2px 7px;border-radius:5px;background:#e6f5f2;color:#176d67;font-size:12px;font-weight:700}.takeaway{display:grid;grid-template-columns:64px 1fr;gap:14px;padding:17px 0;border-bottom:1px dashed var(--line)}.takeaway:last-child{border-bottom:0}.idx{font-size:32px;line-height:1;color:#cce1dd;font-weight:900}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.footer{padding:22px 0 60px;color:#667085;font-size:13px;text-align:center}@media(max-width:880px){.layout{grid-template-columns:1fr}.toc{display:none}.section{padding:24px}.grid,.two,.flow{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}}@media(max-width:600px){body{overflow-x:hidden}.wrap{width:calc(100% - 28px);max-width:100%}.hero{padding:42px 0 30px}.hero h1{font-size:34px;line-height:1.12;overflow-wrap:anywhere}.subtitle{font-size:17px;overflow-wrap:anywhere}.meta{gap:8px;margin-top:22px}.pill{max-width:100%;overflow-wrap:anywhere}.section{padding:20px}.section h2{font-size:25px}.thesis{padding:16px;font-size:16px}.takeaway{grid-template-columns:46px 1fr}}
+  </style>
+</head>
+<body>
+  <header class="hero wrap">
+    <span class="eyebrow">PAPER CORE TECH SHARE · 2026.05</span>
+    <h1><span>AgenticRAG</span>：企业 RAG 的提升，可能来自把“检索”变成一段可导航的工作流</h1>
+    <p class="subtitle">对《AgenticRAG: Agentic Retrieval for Enterprise Knowledge Bases》的结构化中文解读：不重建企业搜索，而是在现有搜索栈上增加 search、find、open、summarize 四个工具和有界推理循环。</p>
+    <div class="meta"><span class="pill">Enterprise Knowledge Base</span><span class="pill">GPT-5-mini / Claude Sonnet 4.5</span><span class="pill">Search + Find + Open + Summarize</span><span class="pill">BRIGHT / WixQA / FinanceBench</span><span class="pill">arXiv:2605.05538v1</span></div>
+  </header>
+
+  <div class="wrap layout">
+    <aside class="toc"><strong>内容导航</strong><a href="#one">01 一句话结论</a><a href="#problem">02 问题改写</a><a href="#loop">03 Agent 循环</a><a href="#tools">04 三层检索工具</a><a href="#context">05 上下文管理</a><a href="#results">06 三组实验</a><a href="#cost">07 成本与效率</a><a href="#ablation">08 消融证据</a><a href="#production">09 生产经验</a><a href="#limits">10 局限与疑点</a><a href="#practice">11 实践配方</a></aside>
+    <main>
+      <section class="section" id="one">
+        <div class="kicker">01 · TL;DR</div><h2>一句话读懂 AgenticRAG</h2>
+        <div class="thesis"><b>让推理模型先搜索候选文档，再在文档内 find、按行 open，并在上下文接近上限时 summarize；检索从一次 top-k 变成“发现 → 阅读 → 补搜 → 引证”的有界循环。</b>论文最强证据不是某个新 retriever，而是 single-shot 到 agentic tool use 带来的 5.9 倍 Recall@1。</div>
+        <div class="grid" style="margin-top:18px"><div class="card"><div class="num">49.6%</div><b>BRIGHT Recall@1</b>Claude Sonnet 4.5，较最佳 embedding baseline 高 21.8 个百分点。</div><div class="card"><div class="num">0.96</div><b>WixQA factuality</b>GPT-5-mini，在 Expert Written 上较 E5 的 0.85 相对提升 13%。</div><div class="card"><div class="num">92%</div><b>FinanceBench 正确率</b>距提供真实证据页面的 94% oracle 仅差 2 个百分点。</div></div>
+      </section>
+
+      <section class="section" id="problem">
+        <div class="kicker">02 · MOTIVATION</div><h2>它把 RAG 的责任边界重新分配了</h2>
+        <div class="two"><div class="card"><b>标准 RAG</b>搜索系统一次性决定候选集，LLM 只能在固定 top-k 内生成。第一阶段漏掉的证据，后面无法恢复。</div><div class="card"><b>AgenticRAG</b>底层搜索只负责快速发现；推理模型可以改写查询、进入文档、定位段落、读取更多窗口并决定是否继续。</div></div>
+        <p class="lead">企业问题经常是“先找到正确文件，再理解文件结构，最后跨文件拼证据”。把 grounding 全压给向量召回，相当于要求一次检索同时猜中三个阶段。</p>
+        <div class="thesis warn"><b>论文没有提出新的 embedding 或索引算法。</b>它的贡献是一个可覆盖现有企业搜索基础设施的轻量 Harness，以及围绕真实部署形成的工具协议和上下文策略。</div>
+      </section>
+
+      <section class="section" id="loop">
+        <div class="kicker">03 · AGENTIC LOOP</div><h2>有界状态机，而不是无限自主 Agent</h2>
+        <div class="flow"><div class="step"><span class="tag">DISCOVER</span><h3>搜索与定位</h3><small>Agent 选择 search/find/open，并把工具结果加入 conversation state。</small></div><div class="arrow">→</div><div class="step"><span class="tag">DECIDE</span><h3>证据是否足够</h3><small>足够则回答并附引用；不足则根据已知实体继续调用工具。</small></div><div class="arrow">→</div><div class="step"><span class="tag">BOUND</span><h3>预算约束</h3><small>默认最多 15 轮；到上限强制基于现有证据完成回答。</small></div></div>
+        <figure class="narrow"><img src="figure-agent-loop.png" alt="AgenticRAG loop"><figcaption>论文图1：conversation state 串联 Agent、检索工具、上下文管理和带引用回答。</figcaption></figure>
+        <p class="formula">while iteration &lt; 15: Agent(state) → tool_call | final_answer; &nbsp; overflow → summarize(state)</p>
+      </section>
+
+      <section class="section" id="tools">
+        <div class="kicker">04 · RETRIEVAL TOOLS</div><h2>Search、Find、Open 是三种不同粒度的动作</h2>
+        <div class="grid"><div class="card"><b>Search：跨库发现</b>一次工具调用最多并行发出 5 个改写查询，每个查询最多返回 10 个 snippet，并去重后分配 reference ID。</div><div class="card"><b>Find：文档内定位</b>对指定 reference ID 做关键词或可选语义匹配；每个 pattern 最多 2 段，总结果约束在 11K token。</div><div class="card"><b>Open：按窗口阅读</b>从指定行号读取全文窗口，默认最多 1800 行；结果带总行数，Agent 可继续跳到其他位置。</div></div>
+        <div class="table-wrap"><table><thead><tr><th>工具</th><th>搜索空间</th><th>Agent 已知什么时使用</th><th>主要输出</th></tr></thead><tbody><tr><td>search</td><td>整个企业语料</td><td>只知道问题主题</td><td>snippet + 元数据 + reference ID</td></tr><tr><td>find</td><td>单个候选文档</td><td>知道要找的实体或指标</td><td>匹配 passage</td></tr><tr><td>open</td><td>单文档指定窗口</td><td>知道应读哪个位置或需要上下文</td><td>带行号全文</td></tr></tbody></table></div>
+        <div class="thesis"><b>reference ID 是协议核心：</b>它把“搜索结果中的候选文件”变成后续 find/open 可寻址的对象，也让最终答案能回指证据。</div>
+      </section>
+
+      <section class="section" id="context">
+        <div class="kicker">05 · CONTEXT MANAGEMENT</div><h2>Summarize 不是普通摘要，而是上下文垃圾回收</h2>
+        <p>每次 find/open 可能带回约 11K token。系统按 128K token 阈值监控 conversation：达到 90% 时发内部预警，达到上限时强制调用 summarize。Agent 记录当前推理状态并标记要保留的 reference ID，系统随后删除未被保留的旧工具结果。</p>
+        <figure class="narrow"><img src="figure-context-management.png" alt="Context management before and after"><figcaption>论文图2：压缩前后对话。保留有价值引用对应的工具结果，移除不再相关的搜索与阅读内容。</figcaption></figure>
+        <div class="two"><div class="card"><b>保留的是“推理状态 + 证据句柄”</b>不是把所有历史压成一段不可寻址的摘要；reference ID 仍可继续 open/find。</div><div class="card"><b>风险是摘要损失</b>如果 Agent 错删候选引用，后续可能重复搜索或永久丢失反例，论文对压缩忠实度评估较少。</div></div>
+      </section>
+
+      <section class="section" id="results">
+        <div class="kicker">06 · RESULTS</div><h2>三组任务分别验证“找文档、跨文档回答、长财报推理”</h2>
+        <figure><img src="table-bright-results.png" alt="BRIGHT and WixQA results"><figcaption>论文表1、表2与图3：工具规格、BRIGHT 长文档 Recall@1，以及 WixQA factuality。</figcaption></figure>
+        <div class="table-wrap"><table><thead><tr><th>数据集</th><th>任务</th><th>最佳结果</th><th>关键对比</th></tr></thead><tbody><tr><td>BRIGHT</td><td>从 5.65K 篇、平均 16K token 长文档中找相关文档</td><td class="hi">49.6% R@1</td><td>Qwen embedding 27.8%</td></tr><tr><td>WixQA Expert</td><td>跨文档支持与排障回答</td><td class="hi">0.96 factuality</td><td>E5 0.85；BM25 0.83</td></tr><tr><td>FinanceBench</td><td>84 份平均约 116K token 财务文档问答</td><td class="hi">92.0% correct</td><td>传统 RAG 24.24%；oracle 94%</td></tr></tbody></table></div>
+        <figure class="narrow"><img src="table-financebench.png" alt="FinanceBench results"><figcaption>论文表3：AgenticRAG 在 FinanceBench 上接近直接提供真实证据页的上限。</figcaption></figure>
+      </section>
+
+      <section class="section" id="cost">
+        <div class="kicker">07 · COST</div><h2>质量提升很大，token 账单也很真实</h2>
+        <div class="grid"><div class="card"><div class="num">52.3K</div><b>BRIGHT 平均 token</b>single-shot 为 20.4K，AgenticRAG 约 2.6 倍。</div><div class="card"><div class="num">114.8K</div><b>FinanceBench 平均 token</b>single-shot 为 14.7K，成本比例达到 7.8 倍。</div><div class="card"><div class="num">4.48–4.79</div><b>平均工具调用数</b>远低于 15 轮上限，说明多数任务不需要跑满循环。</div></div>
+        <p>BRIGHT 上 Claude AgenticRAG 的 Recall@1 是 single-shot search 的约 5.9 倍，而 token 是 2.6 倍；质量增幅大于 token 增幅。但 FinanceBench 需要深读长文件，成本比明显恶化，不能只拿平均准确率做上线决策。</p>
+        <div class="thesis warn"><b>生产判断应按问题路由：</b>简单查事实走普通 RAG，复杂、多意图、需要长文导航的问题才进入 AgenticRAG。论文本身也把 switcher 视为关键部署经验。</div>
+      </section>
+
+      <section class="section" id="ablation">
+        <div class="kicker">08 · ABLATION</div><h2>最大的增益来自“允许多轮工具使用”</h2>
+        <figure><img src="table-ablation.png" alt="Token cost and agentic component ablations"><figcaption>论文表4与表5：token 成本，以及 single-shot、完整 Agent 与组件消融结果。</figcaption></figure>
+        <div class="takeaway"><div class="idx">01</div><div><b>Single-shot 8.41% → Claude Agent 49.59%。</b>这是全文最强消融，说明循环本身比任何单个附加组件重要。</div></div><div class="takeaway"><div class="idx">02</div><div><b>去掉 summarize 几乎不降 BRIGHT 分数。</b>因为平均工具轮次不高，BRIGHT 很少触发极限上下文；这不能证明 summarize 对超长财报无用。</div></div><div class="takeaway"><div class="idx">03</div><div><b>去掉 semantic find 反而从 43.49 升到 46.34。</b>语义 find 不是稳定贡献项，可能引入噪声或与 search/open 重叠。</div></div><div class="takeaway"><div class="idx">04</div><div><b>单查询搜索分数相近，但调用从 4.79 增至 6.79。</b>multi-query 的主要价值是减少循环次数，不是直接提高 Recall@1。</div></div>
+      </section>
+
+      <section class="section" id="production">
+        <div class="kicker">09 · PRE-PRODUCTION</div><h2>论文里最像“踩坑总结”的四条设计</h2>
+        <div class="two"><div class="card"><b>搜索结果必须带元数据</b>title、filename、file type 能帮助模型区分内容相似但来源不同的 snippet，并减少重复搜索。</div><div class="card"><b>文档预览必须有行号</b>让 Agent 能锚定表格或章节，在下一次 open 时直接跳转，而不是重新读开头。</div><div class="card"><b>压缩后保留候选引用</b>摘要不能只留自然语言结论，还要保留 reference ID，才能继续深入 promising candidate。</div><div class="card"><b>复杂度路由优先</b>简单查询走传统 RAG 保持时延与成本；多意图问题才进入深度 Agent Harness。</div></div>
+      </section>
+
+      <section class="section" id="limits">
+        <div class="kicker">10 · CRITICAL READING</div><h2>这篇论文最需要谨慎解读的地方</h2>
+        <div class="takeaway"><div class="idx">A</div><div><b>底层企业搜索是闭源组件。</b>论文强调 Harness 可叠加现有搜索栈，但读者无法完整复现其 snippet 质量、排序与权限行为。</div></div><div class="takeaway"><div class="idx">B</div><div><b>强模型既是能力也是成本。</b>GPT-5-mini 和 Claude Sonnet 4.5 的工具规划能力可能显著高于本地小模型，结果不能直接迁移。</div></div><div class="takeaway"><div class="idx">C</div><div><b>Recall@1 排名由模型自报相关性诱导。</b>Agent 在最终答案中为引用打相关分，再据此形成排序；这与标准 retriever 独立打分并不完全同构。</div></div><div class="takeaway"><div class="idx">D</div><div><b>WixQA factuality 使用 LLM judge。</b>0.96 是自动评估分数，不等于人工核查后的 96% 无错误答案。</div></div><div class="takeaway"><div class="idx">E</div><div><b>广覆盖多证据仍是弱项。</b>Pony 每题平均约 6.9 个 gold 文档，深度优先导航容易找到少数强证据，却漏掉并列相关文档。</div></div>
+      </section>
+
+      <section class="section" id="practice">
+        <div class="kicker">11 · PRACTICAL RECIPE</div><h2>实现一个可用的企业 AgenticRAG，先做什么？</h2>
+        <div class="grid"><div class="card"><b>1. 工具语义保持正交</b>search 发现、find 定位、open 阅读，不要三个工具都返回相同 top-k chunk。</div><div class="card"><b>2. 统一 reference ID</b>搜索、阅读、摘要和最终引用都围绕稳定 ID 传递，避免 Agent 复制整篇文档。</div><div class="card"><b>3. 所有循环都设硬预算</b>限制轮数、单次结果、总 token、总时延与总费用；到上限明确降级策略。</div><div class="card"><b>4. 压缩时保留证据血缘</b>摘要应记录已确认事实、未解决问题和保留引用，不能只写一段泛化总结。</div><div class="card"><b>5. 做复杂度分类路由</b>单事实查询走一次检索；跨文件比较、长表格与多意图问题才启用 Agent。</div><div class="card"><b>6. 同时评估质量与成本</b>记录每题工具轨迹、token、延迟、引用覆盖和失败原因，不只看最终正确率。</div></div>
+        <div class="thesis good" style="margin-top:20px"><b>最终评价：</b>AgenticRAG 的贡献不是证明“Agent 永远优于 RAG”，而是给出一个实用边界：当问题需要先找文档、再在文档中导航时，搜索栈负责候选发现，推理模型负责动态取证，比把全部希望寄托在一次向量召回上更可靠。</div>
+      </section>
+    </main>
+  </div>
+  <footer class="footer wrap">基于 <a href="https://arxiv.org/abs/2605.05538">arXiv:2605.05538v1</a> 制作 · 图表版权归原论文作者所有 · 本页为中文技术解读，不替代原文</footer>
+</body>
+</html>

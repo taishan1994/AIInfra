@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ψ-RAG 论文核心技术解读卡</title>
+  <style>
+    :root{--bg:#f4f7fb;--paper:#fff;--ink:#172033;--muted:#667085;--line:#e4eaf2;--blue:#2656c9;--cyan:#078b91;--orange:#e66f3f;--green:#168160;--purple:#7451b8;--shadow:0 12px 35px rgba(36,49,83,.09)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#eaf2ff 0,#f8fafc 360px);color:var(--ink);font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;line-height:1.72;letter-spacing:0}a{color:inherit}.wrap{width:min(1180px,calc(100% - 36px));margin:auto}.hero{padding:70px 0 42px}.eyebrow{display:inline-flex;padding:6px 12px;border:1px solid #c8d8ff;border-radius:999px;background:#f8faff;color:var(--blue);font-size:13px;font-weight:700}.hero h1{font-size:clamp(38px,6vw,70px);line-height:1.04;margin:20px 0 18px;max-width:1050px}.hero h1 span{color:var(--blue)}.subtitle{font-size:19px;color:#475467;max-width:940px}.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}.pill{padding:7px 12px;border-radius:8px;background:#fff;border:1px solid var(--line);font-size:13px;box-shadow:0 3px 12px rgba(30,46,80,.04)}
+    .layout{display:grid;grid-template-columns:240px 1fr;gap:28px;align-items:start}.toc{position:sticky;top:18px;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:var(--shadow)}.toc strong{display:block;margin-bottom:10px}.toc a{display:block;text-decoration:none;color:var(--muted);font-size:14px;padding:7px 9px;border-radius:6px}.toc a:hover{color:var(--blue);background:#eef3ff}main{min-width:0}.section{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:34px;margin-bottom:24px;box-shadow:var(--shadow)}.section h2{font-size:29px;line-height:1.25;margin:0 0 18px}.section h3{font-size:20px;margin:26px 0 9px}.kicker{font-size:12px;font-weight:800;letter-spacing:.13em;color:var(--blue);text-transform:uppercase;margin-bottom:8px}.lead{font-size:18px;color:#344054}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{padding:19px;border:1px solid var(--line);border-radius:8px;background:#fbfcff}.card b{display:block;margin-bottom:6px}.num{font-size:29px;font-weight:850;line-height:1.1;color:var(--blue)}
+    .thesis{border-left:5px solid var(--blue);background:#f0f4ff;padding:18px 20px;border-radius:0 8px 8px 0;font-size:18px}.warn{border-left-color:var(--orange);background:#fff5ef}.good{border-left-color:var(--green);background:#edf9f4}.formula{font-family:"Times New Roman",serif;background:#101828;color:#eef4ff;padding:18px 22px;border-radius:8px;overflow:auto;font-size:17px}.flow{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr;align-items:stretch;gap:8px}.step{border:1px solid var(--line);border-radius:8px;padding:18px;background:#fff}.step small{display:block;color:var(--muted)}.arrow{display:grid;place-items:center;color:var(--blue);font-size:25px;font-weight:900}figure{margin:24px 0 6px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}figure img{display:block;width:100%;height:auto}figcaption{padding:11px 14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);background:#fafbfc}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:8px;margin:18px 0}table{border-collapse:collapse;width:100%;min-width:680px;font-size:14px}th,td{padding:11px 13px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}th:first-child,td:first-child{text-align:left}thead{background:#f4f6fb}tr:last-child td{border-bottom:0}.hi{background:#edf9f4;font-weight:700}.bad{background:#fff1ed}.tag{display:inline-block;padding:2px 7px;border-radius:5px;background:#eaf0ff;color:#3656b7;font-size:12px;font-weight:700}.takeaway{display:grid;grid-template-columns:64px 1fr;gap:14px;padding:17px 0;border-bottom:1px dashed var(--line)}.takeaway:last-child{border-bottom:0}.idx{font-size:32px;line-height:1;color:#d2dcf5;font-weight:900}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.footer{padding:22px 0 60px;color:#667085;font-size:13px;text-align:center}@media(max-width:880px){.layout{grid-template-columns:1fr}.toc{display:none}.section{padding:24px}.grid,.two,.flow{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}}@media(max-width:600px){body{overflow-x:hidden}.wrap{width:calc(100% - 28px);max-width:100%}.hero{padding:42px 0 30px}.hero h1{font-size:34px;line-height:1.12;overflow-wrap:anywhere}.subtitle{font-size:17px;overflow-wrap:anywhere}.meta{gap:8px;margin-top:22px}.pill{max-width:100%;overflow-wrap:anywhere}.section{padding:20px}.section h2{font-size:25px}.thesis{padding:16px;font-size:16px}.takeaway{grid-template-columns:46px 1fr}}
+  </style>
+</head>
+<body>
+  <header class="hero wrap">
+    <span class="eyebrow">PAPER CORE TECH SHARE · ICML 2026</span>
+    <h1><span>Ψ-RAG</span>：把 Tree-RAG 从“单篇长文摘要树”推进到跨文档多跳检索</h1>
+    <p class="subtitle">对《Hierarchical Abstract Tree for Cross-Document Retrieval-Augmented Generation》的结构化中文解读：从分布自适应抽象树、迭代检索 Agent，到稠密与稀疏混合检索。</p>
+    <div class="meta"><span class="pill">HKUST(GZ)</span><span class="pill">Tree-RAG + Agentic Retrieval</span><span class="pill">Qwen3-Embedding-8B</span><span class="pill">Llama-3.3-70B</span><span class="pill">arXiv:2605.00529v1</span></div>
+  </header>
+
+  <div class="wrap layout">
+    <aside class="toc"><strong>内容导航</strong><a href="#one">01 一句话结论</a><a href="#problem">02 三个核心问题</a><a href="#pipeline">03 整体架构</a><a href="#tree">04 抽象树怎么建</a><a href="#retrieval">05 Agent 如何检索</a><a href="#distribution">06 分布适应性</a><a href="#results">07 实验结果</a><a href="#ablation">08 消融证据</a><a href="#efficiency">09 效率与扩展</a><a href="#limits">10 局限与疑点</a><a href="#practice">11 工程实践</a></aside>
+    <main>
+      <section class="section" id="one">
+        <div class="kicker">01 · TL;DR</div><h2>一句话读懂 Ψ-RAG</h2>
+        <div class="thesis"><b>先用“按相似度合并与折叠”构造不强求均匀深度的抽象树，再让 Agent 在树检索与 BM25 之间多轮切换、改写查询，补上 Tree-RAG 在跨文档多跳问题上的结构隔离和细节丢失。</b></div>
+        <div class="grid" style="margin-top:18px"><div class="card"><div class="num">+25.9</div><b>相对 RAPTOR</b>论文报告多跳与单跳 QA 平均 F1 提升约 25.9。</div><div class="card"><div class="num">+7.4</div><b>相对 HippoRAG 2</b>平均 F1 高约 7.4 个百分点，Tree-RAG 首次达到强 Graph-RAG 水平。</div><div class="card"><div class="num">6.5×</div><b>索引速度</b>MuSiQue 上抽象树构建比 RAPTOR 快 6.5 倍，但仍有二次方扩展瓶颈。</div></div>
+      </section>
+
+      <section class="section" id="problem">
+        <div class="kicker">02 · MOTIVATION</div><h2>传统 Tree-RAG 跨文档时为什么失灵？</h2>
+        <div class="grid"><div class="card"><b>分布适应差</b>RAPTOR 一类 k-means/GMM 聚类倾向生成大小较均匀的簇，偏斜语料中的少数主题会混入主类噪声。</div><div class="card"><b>结构彼此隔离</b>树叶之间没有图结构那样的显式横向关系，多跳问题的第二跳实体往往无法由原查询直接命中。</div><div class="card"><b>上层摘要太粗</b>高层摘要适合总结，却会抹掉名字、数字等 token 级细节；仅靠稠密相似度难以兼顾事实查找。</div></div>
+        <p class="lead">论文的关键判断是：跨文档 RAG 不是“把更多 chunk 放进同一棵树”这么简单，索引形状、检索粒度和查询轨迹必须一起改变。</p>
+      </section>
+
+      <section class="section" id="pipeline">
+        <div class="kicker">03 · ARCHITECTURE</div><h2>两阶段架构：离线建树，在线多轮取证</h2>
+        <div class="flow"><div class="step"><span class="tag">INDEX</span><h3>相似度排序</h3><small>编码全部 chunk，计算两两相似度并从高到低处理。</small></div><div class="arrow">→</div><div class="step"><span class="tag">TREE</span><h3>合并与折叠</h3><small>用 n-1 次连接形成抽象树，再为上层节点生成摘要。</small></div><div class="arrow">→</div><div class="step"><span class="tag">AGENT</span><h3>多粒度检索</h3><small>R&A Agent 迭代选择回答或重检，并融合树索引与 BM25。</small></div></div>
+        <figure><img src="figure-overview.png" alt="Psi-RAG architecture overview"><figcaption>论文图2：左侧是抽象树索引，右侧是面向事实问答与文档总结的多粒度 Agent 检索。</figcaption></figure>
+      </section>
+
+      <section class="section" id="tree">
+        <div class="kicker">04 · ABSTRACT TREE</div><h2>“Merging and Collapse”到底做了什么？</h2>
+        <div class="two"><div class="card"><b>1. Merging</b>两个 chunk 都没有父节点时，新建抽象节点并把二者挂在下面。</div><div class="card"><b>2. Leaf-node collapse</b>一个 chunk 已归属某棵子树、另一个仍孤立时，把孤立叶子直接折叠到现有父节点。</div><div class="card"><b>3. Abstract-node collapse</b>二者已有不同根节点时，按深度把根合并或接入较深路径，让两边达到相同深度。</div><div class="card"><b>4. Rebalance + Abstraction</b>对子节点过多的节点再平衡，然后生成段落式 summary abstract 或短语式 keyword abstract。</div></div>
+        <p class="formula">输入 n 个叶节点 → 按相似度顺序执行恰好 n - 1 次连接 → 得到一棵连通抽象树</p>
+        <figure><img src="figure-tree-steps.png" alt="Abstract tree merging and collapse"><figcaption>论文图3：合并、叶节点折叠和抽象节点折叠。它保留偏斜簇大小，而不是预设每层必须均匀。</figcaption></figure>
+        <div class="thesis warn"><b>容易误解的点：</b>这不是标准的完整 AHC 二叉树。论文借鉴层次聚类的相似度次序，但通过 collapse 直接生成多叉、等深化后的抽象树。</div>
+      </section>
+
+      <section class="section" id="retrieval">
+        <div class="kicker">05 · MULTI-GRANULAR RETRIEVAL</div><h2>Agent 负责“下一跳搜什么”，混合检索负责“从哪里搜”</h2>
+        <div class="flow"><div class="step"><b>初始检索</b><small>从根向叶逐层做 top-k 稠密匹配，拿到第一批 chunk。</small></div><div class="arrow">→</div><div class="step"><b>判断证据</b><small>R&A Agent 输出 &lt;answer&gt; 或 &lt;retrieve&gt;；后者同时生成新查询。</small></div><div class="arrow">→</div><div class="step"><b>补充细节</b><small>新查询检索抽象树与 BM25，使用 reranker 或 RRF 融合后继续推理。</small></div></div>
+        <p class="formula">D*i = r(q'i, T, BM25); &nbsp; Agent(q, D*0...D*i) → answer | retrieve(q'i+1)</p>
+        <p>查询重组不是普通同义改写，而是把前一跳得到的实体身份补入下一跳。例如把“David Gest 的妻子是谁”扩成“美国电影制片人 David Gest 的妻子是谁”，同时帮助 BM25 命中关键词、帮助树检索定位主题摘要。</p>
+      </section>
+
+      <section class="section" id="distribution">
+        <div class="kicker">06 · DISTRIBUTION ADAPTABILITY</div><h2>作者为什么花一整节讨论 k-means 的“均匀效应”？</h2>
+        <p>k-means 最小化簇内平方误差，在一定假设下会偏好大小接近的簇。语料分布高度偏斜时，主类样本可能被分给少数类簇，导致抽象摘要语义混杂。Ψ-RAG 用接近 AHC 的树成本直觉，让语义相近叶子的最低公共祖先尽量更深，从而允许不同规模的子树存在。</p>
+        <figure><img src="figure-distribution.png" alt="RAPTOR and Psi-RAG on skewed distributions"><figcaption>论文图5：在偏斜数据上，RAPTOR 的少数类路径混入更多主类节点；Ψ-RAG 的少数主题子树更集中。</figcaption></figure>
+        <div class="thesis"><b>工程含义：</b>企业知识库往往天然长尾。若目录、产品线或事故类型分布很不均匀，固定 k 或强制平衡的聚类树可能把最需要保护的小主题先“平均掉”。</div>
+      </section>
+
+      <section class="section" id="results">
+        <div class="kicker">07 · RESULTS</div><h2>真正拉开差距的是跨文档多跳，不是简单事实题</h2>
+        <div class="table-wrap"><table><thead><tr><th>方法</th><th>NQ F1</th><th>PopQA F1</th><th>HotpotQA F1</th><th>2Wiki F1</th><th>MuSiQue F1</th><th>平均 F1</th></tr></thead><tbody><tr><td>HippoRAG 2</td><td>62.42</td><td>55.90</td><td>75.40</td><td>71.35</td><td>48.00</td><td>55.41</td></tr><tr><td>RAPTOR + Q3R</td><td>55.40</td><td>25.76</td><td>52.54</td><td>22.16</td><td>21.10</td><td>36.69</td></tr><tr class="hi"><td>Ψ-RAG（summative）</td><td>63.45</td><td>56.74</td><td>74.59</td><td>76.73</td><td>48.90</td><td>62.77</td></tr><tr><td>Ψ-RAG（keyword）</td><td>63.58</td><td>55.88</td><td>74.85</td><td>76.94</td><td>47.83</td><td>62.38</td></tr></tbody></table></div>
+        <figure><img src="table-qa-results.png" alt="QA and retrieval results"><figcaption>论文表2与表3：QA 和 Recall@k 结果。RAPTOR 在 corpus-level 索引上明显退化，Ψ-RAG 在单跳与多跳任务间更均衡。</figcaption></figure>
+        <p>简单 NQ / PopQA 上，传统 DPR 与混合检索仍有竞争力；论文优势主要集中在 HotpotQA、2Wiki、MuSiQue 等要求实体关系与多跳检索的数据集。这比只看总平均值更重要。</p>
+      </section>
+
+      <section class="section" id="ablation">
+        <div class="kicker">08 · ABLATION</div><h2>树、Agent、稀疏检索都不是装饰</h2>
+        <figure><img src="figure-ablation.png" alt="Psi-RAG ablation study"><figcaption>论文图6：移除 reranker、R&A Agent 或 sparse retrieval 后的 F1 雷达图。</figcaption></figure>
+        <div class="takeaway"><div class="idx">01</div><div><b>移除 sparse retrieval 下降最大。</b>PopQA 与 2Wiki 的短事实细节尤其依赖 BM25；这直接证明“摘要树不能替代叶级关键词检索”。</div></div><div class="takeaway"><div class="idx">02</div><div><b>移除 R&A Agent，单跳也会掉分。</b>收益不只来自多跳次数，查询补全与重组也能修复原始问题上下文不足。</div></div><div class="takeaway"><div class="idx">03</div><div><b>reranker 是增益项，不是核心来源。</b>用 RRF 替代 Qwen3-Reranker 后仍保持较强性能，说明主体贡献来自索引与检索轨迹。</div></div>
+      </section>
+
+      <section class="section" id="efficiency">
+        <div class="kicker">09 · EFFICIENCY</div><h2>论文说“快”，但不能忽略 O(n²) 的边界</h2>
+        <div class="two"><div class="card"><b>论文内的积极结果</b>MuSiQue 约 130 万 token 上，树构建 258 秒，相似度排序约 30 秒，比 RAPTOR 快 6.5 倍；自顶向下检索近似 O(log n)。</div><div class="card"><b>工业规模的硬限制</b>全量相似度矩阵需要 O(n²) 空间，排序约 O(n² log n)。到千万级 token 后，显存、内存和索引更新时间都会成为主问题。</div></div>
+        <div class="thesis warn"><b>作者也承认这一点：</b>论文附录提出 bucketing 与 HNSW 近邻扩展。因而“索引快”只在其评测规模与高优化矩阵运算条件下成立，不能直接外推到全公司知识湖。</div>
+      </section>
+
+      <section class="section" id="limits">
+        <div class="kicker">10 · CRITICAL READING</div><h2>这篇论文最值得保留的五个疑问</h2>
+        <div class="takeaway"><div class="idx">A</div><div><b>索引构建不是增量式。</b>n² 相似度和全树摘要适合静态语料；频繁新增、删除文档时如何局部修复没有充分实验。</div></div><div class="takeaway"><div class="idx">B</div><div><b>70B Agent 成本不低。</b>默认抽象和 R&A 都用 Llama-3.3-70B，强基座本身贡献了多少，需要成本归一化比较。</div></div><div class="takeaway"><div class="idx">C</div><div><b>对比公平性仍有配置影响。</b>多数基线加 Q3R，但不同框架能否同等利用 reranker、摘要与迭代轮次并不完全对称。</div></div><div class="takeaway"><div class="idx">D</div><div><b>“Tree-RAG 首次超过 Graph-RAG”依赖所选基线。</b>结论在论文数据与配置中成立，不代表所有图索引或领域图谱都弱于该树。</div></div><div class="takeaway"><div class="idx">E</div><div><b>答案指标不等于引用忠实度。</b>F1 提升说明答案更准，但企业部署还需要逐引用验证、权限过滤和证据覆盖率。</div></div>
+      </section>
+
+      <section class="section" id="practice">
+        <div class="kicker">11 · PRACTICAL RECIPE</div><h2>把论文落到文档问答系统，应当抄哪些原则？</h2>
+        <div class="grid"><div class="card"><b>1. 双索引而非单索引</b>摘要/主题层负责导航，BM25 或精确字段索引负责名字、编号和数字。</div><div class="card"><b>2. 把检索写成状态机</b>每轮明确证据是否足够、下一跳缺什么、剩余轮次多少，避免无界 Agent 循环。</div><div class="card"><b>3. 保护长尾主题</b>对簇纯度、少数类召回和目录覆盖单独监控，不要只看平均聚类质量。</div><div class="card"><b>4. 摘要保留实体共现</b>关键词尽量使用短语而非单词，summary 同时保留关系与来源范围。</div><div class="card"><b>5. 增量索引先做工程约束</b>生产系统优先考虑分桶、局部树和 ANN，不要直接构造全库 n² 矩阵。</div><div class="card"><b>6. 分任务控制检索深度</b>事实题少轮次并启用稀疏检索；总结题可关闭稀疏索引并从高层摘要下钻。</div></div>
+        <div class="thesis good" style="margin-top:20px"><b>最终评价：</b>Ψ-RAG 最有价值的不是“又一种树”，而是把索引结构、查询重组和检索粒度当成一个联合系统：树负责组织语义层级，Agent 负责建立跨文档路径，稀疏检索负责把被摘要抹掉的细节捞回来。</div>
+      </section>
+    </main>
+  </div>
+  <footer class="footer wrap">基于 <a href="https://arxiv.org/abs/2605.00529">arXiv:2605.00529v1</a> 制作 · <a href="https://github.com/Newiz430/Psi-RAG">论文代码</a> · 图表版权归原论文作者所有 · 本页不替代原文</footer>
+</body>
+</html>
