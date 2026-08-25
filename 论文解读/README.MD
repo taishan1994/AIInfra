@@ -11,5 +11,4 @@
 # 评测
 
 - [InsufficiencyBench：先问清楚，再回答——法律 LLM 对信息不足问题的识别能力](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/%E8%AF%84%E6%B5%8B/insufficiency-bench/index.html)
-
-# 垂域大模型
+- [PLawBench：从答对题到真的会做法律工作——真实法律实践中的细粒度评测](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/%E8%AF%84%E6%B5%8B/plawbench/index.html)
