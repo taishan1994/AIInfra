@@ -8,6 +8,7 @@
 - [AgenticRAG：企业 RAG 的提升，可能来自把“检索”变成一段可导航的工作流](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/RAG/agentic-rag/index.html)
 - [Is Grep All You Need：Agent Harness 如何重写 Agentic Search 的检索胜负](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/RAG/grep-agent-harness/index.html)
 - [EnSI-RAG：先找“谁”和“什么关系”，再把证据交给 LLM](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/RAG/ensi-rag/index.html?v=39d5b34)
+- [DocPrune：文档里的大多数视觉 token，其实可以不算](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/RAG/docprune/index.html)
 
 # 评测
 
