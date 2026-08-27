@@ -2,6 +2,10 @@
 
 - [DRIVE：代码 RLVR 的关键，可能不是新算法，而是把训练数据排对顺序](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/drive/index.html)
 
+# 模型架构
+
+- [GLM-5.3-Flash：用混合注意力和软硬件协同，把 frontier intelligence 做到 flash cost](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84/glm-5.3-flash/index.html)
+
 # RAG
 
 - [Ψ-RAG：把 Tree-RAG 从“单篇长文摘要树”推进到跨文档多跳检索](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/RAG/psi-rag/index.html)
