@@ -10,7 +10,7 @@
 <h2>一、先说结论：GeoRA 改的不是 rank，而是“更新应该落在哪里”</h2>
 <p>普通 LoRA 只规定更新矩阵是低秩的；PiSSA 把适配器初始化到权重的主奇异方向，适合保留主要表示能力的 SFT 场景。GeoRA 的观察相反：RLVR 的有效更新往往集中在预训练矩阵的尾部方向，并且更新具有明显的各向异性。</p>
 <p>因此它做三件事：用谱先验和欧氏先验筛出几何上更适合改变的权重；在这个受限视图上做 SVD；把未训练的残差冻结为结构锚点。这样既能保持稠密矩阵计算，又避免把 RL 的探索压力施加到最重要的主方向上。</p>
-<div class="figure"><img src="assets/page-03.png" alt="GeoRA方法概览"><div class="caption">图 1：GeoRA 的几何约束、低秩初始化与冻结残差流程（原论文第 3 页）。</div></div>
+<div class="figure"><img src="assets/figure-01.png" alt="GeoRA方法概览"><div class="caption">图 1：GeoRA 的几何约束、低秩初始化与冻结残差流程（从原论文 Figure 1 独立提取）。</div></div>
 <h2>二、算法拆开看：mask → SVD → residual anchor</h2>
 <h3>1. 两个互补的几何先验</h3><p>谱先验关注预训练矩阵的主子空间，欧氏先验关注权重大小。令 W 为原始权重、Ŵ<sub>r</sub> 为它的 rank-r 近似、ρ 为选择比例：</p>
 <div class="formula">M_spec(i,j) = 1( |Ŵ_r(i,j)| ≤ τ_spec(ρ) )
@@ -26,14 +26,14 @@ h = W_res x + (α/r) B_geo A_geo x</div>
 <p>训练时只更新 A<sub>geo</sub>、B<sub>geo</sub>，W<sub>res</sub> 固定。初始化时两项相加仍等于 W，因此模型不会因为换了适配器而突然改变输出；训练过程中，模型保留一个不可被 RL 噪声直接破坏的预训练结构锚点。</p>
 <h2>三、一个小例子：为什么不是“取最大的奇异值”</h2>
 <p>假设某层权重的 SVD 方向中，前两个方向承载通用语言结构，RLVR 的奖励只要求模型学会一种新的解题格式。若把 rank=2 直接放在主方向上，更新会高效但容易改变原有能力；GeoRA 先用 mask 排除或弱化这些结构敏感位置，再在剩余视图中提取 rank=2 的可训练方向。于是低秩预算被用来“改变任务行为”，冻结残差负责“守住基础能力”。这也解释了论文观察到的现象：GeoRA 的 head subspace overlap ≤ 0.02，而 tail overlap ≥ 0.96。</p>
-<div class="figure"><img src="assets/page-05.png" alt="GeoRA公式与几何先验"><div class="caption">图 2：几何约束与残差分解的原论文页面。</div></div>
+<div class="figure"><img src="assets/figure-02.png" alt="GeoRA公式与几何先验"><div class="caption">图 2：几何先验构造图（从原论文 Figure 2 独立提取）。</div></div>
 <h2>四、实验结果：提升的不只是训练集分数</h2>
 <p>作者在 Qwen3-8B、Llama-3.1-8B，以及医疗和代码任务上比较 FullFT、SparseFT、LoRA、PiSSA、MiLoRA。Qwen3-8B 使用 DeepMath-103K + GRPO，rank=16、ρ=0.2。</p>
 <table><tr><th>方法</th><th>AIME24</th><th>AIME25</th><th>MATH500</th><th>OlymMATH</th><th>HumanEval</th></tr><tr><td>LoRA</td><td>19.58</td><td>19.58</td><td>75.60</td><td>10.75</td><td>81.10</td></tr><tr><td>PiSSA</td><td>22.50</td><td>20.42</td><td>74.40</td><td>11.75</td><td>71.95</td></tr><tr><td>MiLoRA</td><td>20.42</td><td>19.58</td><td>76.20</td><td>11.50</td><td>78.66</td></tr><tr><td class="geo">GeoRA</td><td class="geo">23.75</td><td class="geo">21.67</td><td class="geo">78.00</td><td class="geo">12.75</td><td class="geo">82.93</td></tr></table>
 <p>在同一设置下，GeoRA 的 OOD 指标也更稳；医疗任务平均 73.69，代码任务平均 79.65。论文的解释是：冻结残差降低了 RLVR 对预训练拓扑的破坏，所以收益不仅体现在目标数学集，也体现在迁移和遗忘控制上。</p>
-<div class="figure"><img src="assets/page-08.png" alt="GeoRA主实验结果"><div class="caption">图 3：主实验表格（原论文第 8 页），正文中直接嵌入原始页面。</div></div>
+<div class="figure"><img src="assets/figure-03-04.png" alt="GeoRA主实验结果"><div class="caption">图 3：主实验表格（从原论文实验表独立提取）。</div></div>
 <h2>五、稳定性与工程含义</h2><p>在激进学习率 5e−5 下，GeoRA 的 reward 最高、KL 更受控；PiSSA 在训练后期出现明显性能下跌。谱扰动指标 NSS 也支持这个解释：GeoRA 约 0.092–0.096，明显低于 PiSSA 的约 0.395–0.418。</p>
-<div class="figure"><img src="assets/page-10.png" alt="GeoRA效率与稳定性实验"><div class="caption">图 4：稳定性、效率和消融实验（原论文页面）。</div></div>
+<div class="figure"><img src="assets/figure-05.png" alt="GeoRA效率与稳定性实验"><div class="caption">图 4：稳定性、效率和消融实验（从原论文图表独立提取）。</div></div>
 <p class="note"><b>落地建议：</b>如果你要把 GeoRA 接入 RLVR 训练，先固定 ρ 和 rank 做基线，再分别记录 reward、KL、OOD 能力与谱扰动 NSS；不要只看训练集准确率。它的主要收益来自更新位置和残差保护，rank 本身不是全部。</p>
 <h2>六、边界与我的判断</h2><p>GeoRA 依赖权重几何与 SVD，mask 和分解会带来预处理成本；ρ、rank 也需要按模型和任务调参。它并非证明所有 RLVR 更新都在尾部，而是提供了一个可验证的归纳偏置：把大部分参数当作结构，把少量几何上更可塑的方向交给奖励优化。</p><p>一句话总结：<b>LoRA 解决“少训练一些参数”，GeoRA 进一步解决“哪些参数值得训练、哪些结构必须保护”。</b></p>
 <footer>来源：<a href="https://aclanthology.org/2026.acl-long.1110/">ACL Anthology</a> · <a href="https://arxiv.org/abs/2601.09361">arXiv:2601.09361</a> · 原论文图片来自 PDF，未重复插图。</footer>
