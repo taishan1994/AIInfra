@@ -6,7 +6,6 @@
 # 模型架构
 
 - [Hy4 preview：770B MoE、Gated DSA 与 1M 上下文的腾讯旗舰模型](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84/hy4-preview/index.html)
-
 - [GLM-5.3-Flash：用混合注意力和软硬件协同，把 frontier intelligence 做到 flash cost](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84/glm-5.3-flash/index.html)
 - [Qwen3.8-Flash-Next：把效率、能力与稳定性放在同一个设计问题里](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84/qwen3.8-flash-next/index.html)
 
