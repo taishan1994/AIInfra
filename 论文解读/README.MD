@@ -11,7 +11,7 @@
 
 # 系统架构
 
-- [Accel-Sim 2.0：让异步、分布式 GPU 的真实瓶颈进入周期级模拟](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/accel-sim-2/index.html)
+- [Accel-Sim 2.0：让异步、分布式 GPU 的真实瓶颈进入周期级模拟](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84/accel-sim-2/index.html?v=e9e46ad)
 
 # RAG
 
