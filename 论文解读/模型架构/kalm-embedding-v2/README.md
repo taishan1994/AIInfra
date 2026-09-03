@@ -17,7 +17,7 @@ KaLM-Embedding-V2 证明：在 1B 参数以内的 embedding 模型中，**双向
 
 ## 2. 模型架构：从 Qwen2-0.5B 到双向 mean pooling
 
-![模型整体框架](assets/framework.png)
+![模型整体框架](assets/framework-v2.png)
 
 图 1 解释：输入可以是“任务指令 + query”，也可以是 passage；模型输出每个 token 的 hidden states，再通过 mean pooling 得到一个固定维度向量。训练和推理都移除 causal mask，使每个 token 可以同时利用左右上下文。它没有额外复杂的 pooling head，优点是参数少、推理路径短、容易部署。
 
