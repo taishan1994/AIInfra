@@ -1,5 +1,6 @@
 # 强化学习
 
+- [OpenForge RL：训练真正部署中的 Harness-native Agent](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/openforge-rl/README.md)
 - [DRIVE：代码 RLVR 的关键，可能不是新算法，而是把训练数据排对顺序](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/drive/index.html)
 - [GeoRA：让 RLVR 的低秩适配沿着正确的几何方向更新](https://taishan1994.github.io/AIInfra/%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/GeoRA/index.html)
 
